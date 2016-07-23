@@ -17,20 +17,43 @@ v0.1
 
 (function($){
 
-    $.fn.inputMask = function() {
+    jQuery.fn.inputMask = function() {
 
-        this.attr('value', '(__)___-____');
+        var phoneInput = this;
+
+        function phone_input_mask() {
+            var mask = '(__)___-____';
+            var myNumbers = [];
+            var myValue = phoneInput.val();
+            var newValue = '';
+            var lastPosition = 1;
+
+            for(var i = 0; i < myValue.length; i++) {
+                if ( !isNaN(myValue[i]) && myValue[i] != ' ' ) {
+                    console.log(myValue[i]);
+                    myNumbers.push(myValue[i]);
+                }
+            }
+
+            console.log(myNumbers);
+        
+        }
         
         this.keydown(function(event) {
-            allowedKeys = [ 46, 9, 13, 116, 8, 37, 38, 39, 40, 10 ];
+            allowedKeys = [ 8, 9, 10, 13, 37, 38, 39, 40, 46, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 116 ];
             if ( allowedKeys.includes(event.keyCode) )  {
 			    // let it happen, don't do anything
-		    } else if (event.keyCode < 48 || event.keyCode > 57 ) {
+            } else if (event.keyCode < 48 || event.keyCode > 57 ) {
                 // Ensure that it is a number and stop the keypress
                event.preventDefault();	
 		    }       
         });
 
+        this.keyup(function(event) {
+            phone_input_mask();
+        });
+
+        
         return this; // always return to ensure compliance with jQuery method chaining
     };
 
