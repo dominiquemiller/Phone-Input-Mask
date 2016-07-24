@@ -5,7 +5,7 @@ Author: Dominique Miller
 v0.1
 */
 
-/* charCode [48,57] 	Numbers 0 to 9
+/* keyCode [48 thru 57] Numbers 0 to 9
  * keyCode 46  			"delete"
  * keyCode 9  			"tab"
  * keyCode 13  			"enter"
@@ -21,21 +21,44 @@ v0.1
 
         var phoneInput = this;
 
+        phoneInput.val();
+
+        String.prototype.replaceAt = function(index, character) {
+            return this.substr(0, index) + character + this.substr(index+character.length);
+        };
+
         function phone_input_mask() {
-            var mask = '(__)___-____';
+            var mask = '(___)___-____';
             var myNumbers = [];
             var myValue = phoneInput.val();
             var newValue = '';
             var lastPosition = 1;
 
-            for(var i = 0; i < myValue.length; i++) {
-                if ( !isNaN(myValue[i]) && myValue[i] != ' ' ) {
-                    console.log(myValue[i]);
-                    myNumbers.push(myValue[i]);
+            for(var h = 0; h < myValue.length; h++) {
+                if ( !isNaN(myValue[h]) && myValue[h] != ' ' ) {
+                    console.log(myValue[h]);
+                    myNumbers.push(myValue[h]);
                 }
             }
 
             console.log(myNumbers);
+
+            // replace underscores with number input
+            for(var i = 0; i < mask.length; i++) {
+              if ( mask[i] === '_' ) {
+                  if (myNumbers.length === 0) {
+                    newValue = newValue + mask[i];
+                  } else {
+                    var char = myNumbers.shift();
+                    newValue = newValue + char;
+                    lastPosition = i + 1;
+                  }
+              } else {
+                  newValue = newValue + mask[i];
+              } 
+            }
+            phoneInput.val(newValue);
+            phoneInput[0].setSelectionRange(lastPosition, lastPosition );
         
         }
         
