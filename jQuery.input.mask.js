@@ -25,7 +25,7 @@ v0.1
 
         var phoneInput = this;
 
-        //phoneInput.val();
+        phoneInput.val();
 
         function phone_input_mask() {
             var mask = settings.mask;
