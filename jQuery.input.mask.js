@@ -1,5 +1,5 @@
 /* 
-jQuery Phone number input mask plug-in
+jQuery input mask plug-in
 Author: Dominique Miller
 2016
 v0.1
@@ -17,18 +17,18 @@ v0.1
 
 (function($){
 
-    jQuery.fn.inputMask = function() {
+    $.fn.inputMask = function(options) {
+        
+        var settings = $.extend({
+                            mask: '(___)___-____' 
+                        }, options);
 
         var phoneInput = this;
 
-        phoneInput.val();
-
-        String.prototype.replaceAt = function(index, character) {
-            return this.substr(0, index) + character + this.substr(index+character.length);
-        };
+        //phoneInput.val();
 
         function phone_input_mask() {
-            var mask = '(___)___-____';
+            var mask = settings.mask;
             var myNumbers = [];
             var myValue = phoneInput.val();
             var newValue = '';
@@ -39,9 +39,8 @@ v0.1
                     console.log(myValue[h]);
                     myNumbers.push(myValue[h]);
                 }
-            }
+             }
 
-            console.log(myNumbers);
 
             // replace underscores with number input
             for(var i = 0; i < mask.length; i++) {
@@ -61,14 +60,16 @@ v0.1
             phoneInput[0].setSelectionRange(lastPosition, lastPosition );
         
         }
+        this.val('').attr('placeholder', '');
+
+        this.attr('placeholder', settings.mask);
         
         this.keydown(function(event) {
             allowedKeys = [ 8, 9, 10, 13, 37, 38, 39, 40, 46, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 116 ];
             if ( allowedKeys.includes(event.keyCode) )  {
-			    // let it happen, don't do anything
+			    // if key is allowed, allow event to occur
             } else if (event.keyCode < 48 || event.keyCode > 57 ) {
-                // Ensure that it is a number and stop the keypress
-               event.preventDefault();	
+                event.preventDefault();	
 		    }       
         });
 
